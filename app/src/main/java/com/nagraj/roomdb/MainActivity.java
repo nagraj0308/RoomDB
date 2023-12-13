@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,11 +13,17 @@ import android.widget.Toast;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    Button insert, selectAll, delete, selectById, selectByName;
-    EditText firstName, lastName, id, age;
-    RecyclerView recyclerView;
-    List<User> users;
-
+    private Button insert;
+    private Button selectAll;
+    private Button delete;
+    private Button selectById;
+    private Button selectByName;
+    private EditText firstName;
+    private EditText lastName;
+    private EditText id;
+    private EditText age;
+    private RecyclerView recyclerView;
+    private List<User> users;
     public static UserDatabase userDatabase;
 
     @Override
@@ -48,25 +53,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertSection() {
-        insert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    User user1 = new User();
-                    user1.setFirstName(firstName.getText().toString());
-                    user1.setLastName(lastName.getText().toString());
-                    user1.setUid(Integer.parseInt(id.getText().toString()));
-                    user1.setAge(Integer.parseInt(age.getText().toString()));
-                    userDatabase.userDao().insertAll(user1);
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Not Inserted", Toast.LENGTH_LONG).show();
+        insert.setOnClickListener(view -> {
+            try {
+                User user1 = new User();
+                user1.setFirstName(firstName.getText().toString());
+                user1.setLastName(lastName.getText().toString());
+                user1.setUid(Integer.parseInt(id.getText().toString()));
+                user1.setAge(Integer.parseInt(age.getText().toString()));
+                userDatabase.userDao().insertAll(user1);
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Not Inserted", Toast.LENGTH_LONG).show();
 
-                } finally {
-                    reload();
-
-                }
+            } finally {
+                reload();
 
             }
+
         });
 
 
@@ -121,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     public void reload() {
         List<User> users = MainActivity.userDatabase.userDao().getAll();
         recyclerView.setAdapter(new Recycle(users));
